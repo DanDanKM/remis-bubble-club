@@ -555,16 +555,20 @@ if(window.speechSynthesis){loadVoices();speechSynthesis.onvoiceschanged=loadVoic
    A sentence is matched whole, or assembled from the longest recorded pieces (numbers, letters, words,
    phrases). Anything with no recording falls back to the device voice below. ---------- */
 const Clips={man:null,tried:false,count:0,missing:new Set(),current:null,
+  /* clips can also ship inside the page: a window.VOICES_INLINE manifest whose values are data: URLs */
   load(){ if(this.tried)return Promise.resolve(); this.tried=true;
-    return fetch('voices/manifest.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{ if(m&&typeof m==='object'){this.man=m;this.count=Object.values(m).reduce((n,b)=>n+Object.keys(b).length,0);} }).catch(()=>{}); },
+    const take=m=>{ if(m&&typeof m==='object'){this.man=m;this.count=Object.values(m).reduce((n,b)=>n+Object.keys(b).length,0);} };
+    if(window.VOICES_INLINE){take(window.VOICES_INLINE);return Promise.resolve();}
+    return fetch('voices/manifest.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(take).catch(()=>{}); },
+  src(f){return f.startsWith('data:')?f:'voices/'+f;},
   norm(s){return String(s).toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9/ ]+/g,' ').replace(/\s+/g,' ').trim();},
   resolve(key,text){
     if(!this.man)return null; const bank=this.man[key]||{},shared=this.man._shared||{}; const look=k=>bank[k]||shared[k];
     const t=this.norm(text); if(!t)return [];
-    if(look(t))return ['voices/'+look(t)];
+    if(look(t))return [this.src(look(t))];
     const words=t.split(' '),out=[]; let i=0;
     while(i<words.length){let f=null,len=0;for(let n=Math.min(12,words.length-i);n>=1;n--){const k=words.slice(i,i+n).join(' ');const hit=look(k);if(hit){f=hit;len=n;break;}}
-      if(!f){this.missing.add(key+': '+text);return null;} out.push('voices/'+f); i+=len;}
+      if(!f){this.missing.add(key+': '+text);return null;} out.push(this.src(f)); i+=len;}
     return out;
   },
   stop(){ if(this.current){try{this.current.pause();}catch(e){} this.current=null;} },

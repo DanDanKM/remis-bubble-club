@@ -174,6 +174,41 @@ def lines(country=None):
     return L
 
 
+PREFS = {
+    "katy":   {"gender": "female", "age": ["young"], "like": ["expressive", "energetic", "bright", "upbeat", "friendly"]},
+    "gaga":   {"gender": "female", "age": ["young", "middle_aged", "middle-aged"], "like": ["confident", "seductive", "smooth", "warm", "sultry"]},
+    "huntrx": {"gender": "female", "age": ["young"], "like": ["expressive", "energetic", "clear"]},
+    "mira":   {"gender": "female", "age": ["young"], "like": ["cool", "calm", "confident"]},
+    "zoey":   {"gender": "female", "age": ["young"], "like": ["playful", "cute", "bubbly", "excited"]},
+    "archie": {"gender": "male", "age": ["middle_aged", "middle-aged", "old"], "accent": ["australian"], "like": ["warm", "calm", "gentle", "soothing", "story"]},
+    "irie":   {"gender": "male", "age": ["middle_aged", "middle-aged", "old"], "accent": ["jamaican", "caribbean"], "like": ["deep", "calm", "relaxed", "laid", "chill", "narrat"]},
+}
+
+
+def pick_voice(k, voices, used):
+    """Choose the best unused voice on the account for a character, by ElevenLabs' own labels."""
+    want = PREFS[k]
+    best, score = None, -99
+    for v in voices:
+        if v["voice_id"] in used:
+            continue
+        lab = {kk.lower(): str(x).lower() for kk, x in (v.get("labels") or {}).items()}
+        s = 0
+        if lab.get("gender") == want["gender"]:
+            s += 6
+        elif lab.get("gender"):
+            s -= 6
+        if lab.get("age") in want.get("age", []):
+            s += 2
+        if any(acc in lab.get("accent", "") for acc in want.get("accent", [])):
+            s += 4
+        text = " ".join([lab.get("description", ""), lab.get("descriptive", ""), lab.get("use_case", ""), v.get("name", "").lower()])
+        s += sum(1 for w in want.get("like", []) if w in text)
+        if s > score:
+            best, score = v, s
+    return best
+
+
 def norm(s):
     """Must match Clips.norm in index.html."""
     s = s.lower().replace("’", "").replace("'", "")
@@ -213,15 +248,35 @@ def main():
     key = os.environ.get("ELEVENLABS_API_KEY")
     if not key:
         sys.exit("Set ELEVENLABS_API_KEY first (see the top of this file).")
+    def list_voices():
+        try:
+            return api("/voices", key=key)["voices"]
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                print(f"Note: this key is not allowed to list voices ({e.code}); skipping the voice check. "
+                      "If recording also fails, make a new key at elevenlabs.io with Text to Speech access.")
+                return None
+            raise
     if a.voices:
-        for v in api("/voices", key=key)["voices"]:
+        voices = list_voices() or []
+        for v in voices:
             print(f"{v['voice_id']}  {v['name']}  ({', '.join(f'{k}={x}' for k, x in (v.get('labels') or {}).items())})")
         return
-    available = {v["voice_id"] for v in api("/voices", key=key)["voices"]}
+    voices = list_voices()
+    available = {v["voice_id"] for v in voices} if voices is not None else None
     todo = {k: v for k, v in all_lines.items() if not a.only or k == a.only}
-    for k in todo:
-        if VOICE_IDS[k] not in available:
-            sys.exit(f"Voice id for '{k}' ({VOICE_IDS[k]}) is not on your account. Run --voices and paste one into VOICE_IDS.")
+    if available is not None:
+        used = {VOICE_IDS[k] for k in VOICE_IDS if VOICE_IDS[k] in available}
+        for k in todo:
+            if VOICE_IDS[k] in available:
+                continue
+            choice = pick_voice(k, voices, used)
+            if not choice:
+                sys.exit(f"No voice found on your account for '{k}'. Run --voices and paste an id into VOICE_IDS.")
+            used.add(choice["voice_id"]); VOICE_IDS[k] = choice["voice_id"]
+            lab = choice.get("labels") or {}
+            print(f"  {k}: the configured voice is not on this account, using '{choice['name']}' "
+                  f"({lab.get('gender', '?')}, {lab.get('age', '?')}, {lab.get('accent', '?')}) id {choice['voice_id']}")
     print(f"{sum(len(v) for v in todo.values())} lines, {chars} characters in total. Recording the missing ones...")
     manifest_path = os.path.join(a.out, "manifest.json")
     manifest = {}
@@ -248,6 +303,9 @@ def main():
                         body = e.read().decode(errors="ignore")[:200]
                         if e.code == 429 or e.code >= 500:
                             print(f"  waiting ({e.code})..."); time.sleep(8 * (attempt + 1)); continue
+                        if e.code == 401:
+                            sys.exit("ElevenLabs rejected the API key (401). Check it was pasted completely, or create a new key "
+                                     "at elevenlabs.io (profile menu, API Keys) with Text to Speech access, then run again.")
                         sys.exit(f"ElevenLabs refused '{t}': {e.code} {body}")
                 else:
                     sys.exit("Gave up after three tries. Run the script again later; finished lines are kept.")
