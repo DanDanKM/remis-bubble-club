@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 make_voices.py - records every line that Remi's Bubble Club speaks, one small mp3 per line,
 using ElevenLabs, and writes voices/manifest.json so the game plays the recordings instead of
@@ -36,6 +36,8 @@ VOICE_IDS = {
     "archie": "IKne3meq5aSn9XLyUdCD",   # Charlie (Australian)
     # deep, relaxed sloth host
     "irie":   "nPczCjzI2devNBz1zQrb",   # Brian
+    # bright, bouncy little bee
+    "bumble": "FGY2WhTYpPnrIDTdsKH5",   # Laura
 }
 SETTINGS = {
     "katy":   {"stability": 0.45, "similarity_boost": 0.8, "style": 0.45, "speed": 1.0},
@@ -45,9 +47,14 @@ SETTINGS = {
     "zoey":   {"stability": 0.45, "similarity_boost": 0.8, "style": 0.4,  "speed": 1.05},
     "archie": {"stability": 0.6,  "similarity_boost": 0.8, "style": 0.2,  "speed": 0.88},
     "irie":   {"stability": 0.6,  "similarity_boost": 0.8, "style": 0.3,  "speed": 0.85},
+    "bumble": {"stability": 0.4,  "similarity_boost": 0.8, "style": 0.55, "speed": 1.05},
 }
 MODEL = "eleven_flash_v2_5"
 API = "https://api.elevenlabs.io/v1"
+CONFIG = "voices_config.json"   # per-character voice ids chosen with --adopt override VOICE_IDS
+if os.path.exists(CONFIG):
+    with open(CONFIG, encoding="utf-8") as _f:
+        VOICE_IDS.update(json.load(_f))
 
 # ---------- the lines, mirroring index.html ----------
 NUMS = [str(n) for n in range(1, 21)]
@@ -158,11 +165,29 @@ def lines(country=None):
         L["archie"].append(f"We acknowledge the Traditional Owners of the land we're playing on, the {country} people, and pay our respects to Elders past and present.")
     L["irie"] = NUMS + letter_lines() + SOUNDS + LETTER_WORDS + TRY + LEVELS + [
         "Irie, Remi! I'm Irie the sloth. Welcome to the Bubble Club. Take your time, no rush.",
+        "Irie, Remi. This is my little friend Bumble the bee. She loves letters, and she loves your voice.", "Say hello, Bumble!",
         "Easy now, Remi. Tap a letter, hear it sing.", "Tap a number, count each thing. Irie!",
         "Irie! Nice one.", "Big up yourself, Remi!", "Easy does it. Lovely.", "Sweet, sweet, Remi.",
         "Irie, Remi! Welcome to the Bubble Club.", "Tap a window to play, no rush.",
         "says", "is for", "stars.", "You have", "stickers, Remi. Irie!", "sticker, Remi. Irie!",
         "Earn 5 stars to get your first sticker!",
+    ]
+    L["bumble"] = [str(n) for n in range(0, 9)] + letter_lines() + SOUNDS + LETTER_WORDS + TRY + LEVELS + [
+        "Buzz buzz! Hi Remi, I'm Bumble the bumble bee. Say buzz, and I'll come flying!",
+        "Bee, bee, bumble bee, say a letter, just for me!", "Say it out loud, or tap the flower, and I'll buzz right over.",
+        "Buzz buzz! Sweet as honey!", "Bee-autiful, Remi!", "Zoom! You found my flower!", "Honey for Remi! Yum!", "Buzzing brilliant!",
+        # buzz to the letter / first sounds (sentences are assembled from these pieces plus the letters, sounds and words above)
+        "Buzz to the letter", "Buzz to little", "says", "Like", "Say", "or tap the", "flower.", "That's", "We want", "Look for",
+        "It looks like this.", "Buzz! I didn't catch that.", "Which letter says", "starts with", "Say it, or tap the flower.",
+        # the chant and Remi's name
+        "Bee, bee, bumble bee, can you say your name for me?", "Can you say your name for me?", "That's your name!",
+        "Buzz! Say your name, nice and loud.", "I heard you!",
+        "bee", "bumble", "can you", "say your", "name for", "me",
+        "Tap the big flower on every beat, and chant with me!", "Press start, then tap the flower on every tick.",
+        "Nearly! Listen for the tick, then tap the flower.", "beats! You kept the beat!", "You chanted with me!",
+        # say any letter
+        "Bee, bee, bumble bee, say any letter, just for me!", "Buzz! Say any letter you like.", "or", "Or tap a flower.",
+        "Buzz buzz!",
     ]
     # de-duplicate while keeping order
     for k, v in L.items():
@@ -175,13 +200,14 @@ def lines(country=None):
 
 
 PREFS = {
-    "katy":   {"gender": "female", "age": ["young"], "like": ["expressive", "energetic", "bright", "upbeat", "friendly"]},
+    "katy":   {"gender": "female", "age": ["young"], "accent": ["filipino", "filipina", "tagalog"], "like": ["expressive", "energetic", "bright", "upbeat", "friendly"]},
     "gaga":   {"gender": "female", "age": ["young", "middle_aged", "middle-aged"], "like": ["confident", "seductive", "smooth", "warm", "sultry"]},
     "huntrx": {"gender": "female", "age": ["young"], "like": ["expressive", "energetic", "clear"]},
     "mira":   {"gender": "female", "age": ["young"], "like": ["cool", "calm", "confident"]},
     "zoey":   {"gender": "female", "age": ["young"], "like": ["playful", "cute", "bubbly", "excited"]},
-    "archie": {"gender": "male", "age": ["middle_aged", "middle-aged", "old"], "accent": ["australian"], "like": ["warm", "calm", "gentle", "soothing", "story"]},
+    "archie": {"gender": "male", "age": ["middle_aged", "middle-aged", "old"], "accent": ["aboriginal", "indigenous", "australian"], "like": ["warm", "calm", "gentle", "soothing", "story"]},
     "irie":   {"gender": "male", "age": ["middle_aged", "middle-aged", "old"], "accent": ["jamaican", "caribbean"], "like": ["deep", "calm", "relaxed", "laid", "chill", "narrat"]},
+    "bumble": {"gender": "female", "age": ["young"], "like": ["playful", "bubbly", "cute", "excited", "energetic", "upbeat", "social"]},
 }
 
 
@@ -220,12 +246,76 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", norm(s)).strip("-")[:48] or "x"
 
 
-def api(path, data=None, key=None, raw=False):
-    req = urllib.request.Request(API + path, data=json.dumps(data).encode() if data else None,
+def api(path, data=None, key=None, raw=False, method=None):
+    req = urllib.request.Request(API + path, data=json.dumps(data).encode() if data is not None else None,
                                  headers={"xi-api-key": key, "Content-Type": "application/json",
-                                          "Accept": "audio/mpeg" if raw else "application/json"})
+                                          "Accept": "audio/mpeg" if raw else "application/json"},
+                                 method=method)
     with urllib.request.urlopen(req, timeout=120) as r:
         return r.read() if raw else json.loads(r.read().decode())
+
+
+def find_voices(key, search, gender=None, age=None, accent=None):
+    """Search the public ElevenLabs voice library (community voices, consented by their owners)."""
+    import urllib.parse
+    q = {"page_size": "15", "language": "en", "search": search}
+    if gender: q["gender"] = gender
+    if age: q["age"] = age
+    if accent: q["accent"] = accent
+    try:
+        res = api("/shared-voices?" + urllib.parse.urlencode(q), key=key)
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            sys.exit("This key is not allowed to browse the voice library (" + str(e.code) + "). At elevenlabs.io create a new API key "
+                     "with full access (or at least Text to Speech and Voices read/write), then run again.")
+        raise
+    voices = res.get("voices", [])
+    if not voices:
+        print("No library voices matched. Try another word (an accent, a country, 'storyteller'...).")
+    for v in voices:
+        print(f"\n{v.get('name')}   [{v.get('gender')}, {v.get('age')}, accent: {v.get('accent')}]  "
+              f"{v.get('descriptive') or ''} {v.get('use_case') or ''}")
+        if v.get("description"):
+            print("   " + v["description"][:160])
+        print(f"   listen: {v.get('preview_url')}")
+        print(f"   adopt:  --adopt <character> {v.get('public_owner_id')} {v.get('voice_id')}")
+    return voices
+
+
+def adopt_voice(key, char, owner, voice_id, out):
+    """Add a library voice to the account's own voices, point a character at it, and clear its old clips."""
+    import shutil
+    if char not in VOICE_IDS:
+        sys.exit(f"Unknown character '{char}'. One of: {', '.join(VOICE_IDS)}")
+    try:
+        res = api(f"/voices/add/{owner}/{voice_id}", {"new_name": f"Remi {char}"}, key=key, method="POST")
+    except urllib.error.HTTPError as e:
+        body = e.read().decode(errors="ignore")[:300]
+        if "already" in body.lower():
+            res = {"voice_id": voice_id}
+        else:
+            sys.exit(f"Could not add that voice ({e.code}): {body}\nThe free plan holds 3 added voices; remove one at elevenlabs.io (Voices -> My voices) if it is full.")
+    new_id = res.get("voice_id", voice_id)
+    cfg = {}
+    if os.path.exists(CONFIG):
+        with open(CONFIG, encoding="utf-8") as f:
+            cfg = json.load(f)
+    cfg[char] = new_id
+    with open(CONFIG, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=1)
+    folder = "huntrx" if char in ("mira", "zoey") else char
+    manifest_path = os.path.join(out, "manifest.json")
+    if char == folder:
+        # OneDrive or Explorer may hold the folder itself open; removing the files is what matters
+        shutil.rmtree(os.path.join(out, folder), ignore_errors=True)
+        if os.path.exists(manifest_path):
+            with open(manifest_path, encoding="utf-8") as f:
+                man = json.load(f)
+            man.pop(folder, None)
+            with open(manifest_path, "w", encoding="utf-8") as f:
+                json.dump(man, f, indent=0, ensure_ascii=False)
+        print(f"Old clips for {char} removed.")
+    print(f"{char} now uses voice {new_id}. Run the recorder again to re-record {char}'s lines.")
 
 
 def main():
@@ -235,6 +325,12 @@ def main():
     ap.add_argument("--only")
     ap.add_argument("--country")
     ap.add_argument("--out", default="voices")
+    ap.add_argument("--find", help="search the public voice library, e.g. --find jamaican")
+    ap.add_argument("--gender", help="with --find: male or female")
+    ap.add_argument("--age", help="with --find: young, middle_aged or old")
+    ap.add_argument("--accent", help="with --find: an accent label such as australian")
+    ap.add_argument("--adopt", nargs=3, metavar=("CHARACTER", "PUBLIC_OWNER_ID", "VOICE_ID"),
+                    help="add a library voice to your account and use it for that character")
     a = ap.parse_args()
     all_lines = lines(a.country)
     chars = sum(len(t) for v in all_lines.values() for t in v)
@@ -245,9 +341,18 @@ def main():
                 print("  " + t)
         print(f"\n{sum(len(v) for v in all_lines.values())} lines, {chars} characters (about {chars // 2} credits on {MODEL})")
         return
-    key = os.environ.get("ELEVENLABS_API_KEY")
+    key = (os.environ.get("ELEVENLABS_API_KEY") or "").strip()
+    if not key and os.path.exists("key.txt"):
+        with open("key.txt", encoding="utf-8") as f:
+            key = f.read().strip().strip('"').strip("'")
     if not key:
-        sys.exit("Set ELEVENLABS_API_KEY first (see the top of this file).")
+        sys.exit("No API key. Paste it into key.txt in this folder (nothing else in the file), or set ELEVENLABS_API_KEY.")
+    if a.find:
+        find_voices(key, a.find, a.gender, a.age, a.accent)
+        return
+    if a.adopt:
+        adopt_voice(key, a.adopt[0], a.adopt[1], a.adopt[2], a.out)
+        return
     def list_voices():
         try:
             return api("/voices", key=key)["voices"]

@@ -247,6 +247,45 @@ button:focus-visible,select:focus-visible{outline:4px solid var(--gold);outline-
 .mentor .av.dance{animation:dance .5s ease-in-out infinite alternate}
 @keyframes dance{from{transform:rotate(-6deg) translateY(0)}to{transform:rotate(6deg) translateY(-6px)}}
 
+/* Bumble's Buzz Garden: honeycomb window, meadow, flowers, the flying bee, the Say it button, the chant */
+.win.hex .frame{width:160px;height:160px;box-shadow:none;padding:0;background:transparent;filter:drop-shadow(0 10px 14px rgba(36,6,74,.35))}
+.win.hex .frame::before{content:"";position:absolute;inset:0;background:#fff;clip-path:polygon(25% 2%,75% 2%,99% 50%,75% 98%,25% 98%,1% 50%)}
+.win.hex .inner{position:absolute;inset:12px;width:auto;height:auto;clip-path:polygon(25% 2%,75% 2%,99% 50%,75% 98%,25% 98%,1% 50%)}
+.win.hex .badge{right:2px;top:4px}
+.play.meadow{background:linear-gradient(170deg,rgba(92,200,255,.35),rgba(134,217,109,.3) 55%,rgba(26,158,74,.4));border-color:rgba(255,224,138,.8)}
+.play.meadow::before{content:"☀️";position:absolute;top:-4px;right:16px;font-size:34px;line-height:1;opacity:.95;pointer-events:none;z-index:0}
+.play.meadow::after{content:"🌱🌿🌱🍃🌱🌿🌱🍃🌱🌿";position:absolute;bottom:-6px;left:10px;right:10px;font-size:28px;line-height:1;letter-spacing:6px;opacity:.9;pointer-events:none;z-index:0;overflow:hidden;white-space:nowrap}
+.play.meadow>*{position:relative;z-index:1}
+.hive{position:absolute;right:6px;top:0;font-size:52px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+.flower{position:absolute;width:var(--sz,116px);height:var(--sz,116px);display:grid;place-items:center;font-size:calc(var(--sz,116px)*.86);line-height:1;filter:drop-shadow(0 6px 8px rgba(0,0,0,.3));animation:bob 3.4s ease-in-out infinite;transition:transform .2s,opacity .3s}
+.flower .let{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48%;height:48%;border-radius:50%;background:#fff;display:grid;place-items:center;font:700 calc(var(--sz,116px)*.36) var(--display);color:var(--grape);line-height:1;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.flower.bloom{transform:scale(1.22)}
+.flower.bloom .let{background:var(--gold)}
+.flower.shake{animation:shake .4s}
+.flower.gone{opacity:.35;pointer-events:none}
+.beefly{position:absolute;width:var(--bsz,96px);height:var(--bsz,96px);left:0;top:0;pointer-events:none;z-index:4;transition:left .9s cubic-bezier(.45,0,.2,1),top .9s cubic-bezier(.45,0,.2,1);filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+.beefly svg{width:100%;height:100%;animation:hover .6s ease-in-out infinite alternate}
+.beefly.left svg{transform:scaleX(-1)}
+.beefly .wing{transform-box:fill-box;transform-origin:50% 100%;animation:flap .12s linear infinite alternate}
+.beefly.rest .wing{animation:none}
+.loop{animation:loop 1.1s ease-in-out}
+@keyframes hover{from{translate:0 0}to{translate:0 -8px}}
+@keyframes flap{from{transform:rotate(-16deg) scaleY(.85)}to{transform:rotate(16deg) scaleY(1)}}
+@keyframes loop{25%{transform:translateY(-40px) rotate(-30deg)}50%{transform:translateY(-10px) rotate(20deg)}75%{transform:translateY(-35px) rotate(-10deg)}}
+.earrow{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
+.ear{min-height:84px;padding-inline:30px;border-radius:999px;background:#fff;color:var(--grape);font:700 28px var(--display);box-shadow:var(--shadow);display:inline-flex;align-items:center;gap:12px;transition:transform .1s,background .2s}
+.ear:active{transform:scale(.95)}
+.ear .ico{font-size:38px;line-height:1}
+.ear.on{background:var(--pink);color:#fff;animation:earpulse 1s ease-in-out infinite}
+@keyframes earpulse{50%{box-shadow:0 0 0 12px rgba(255,111,181,.35),var(--shadow)}}
+.heard{font:800 18px var(--body);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.3);min-height:24px;text-align:center}
+.chant{display:flex;justify-content:center;gap:8px 16px;flex-wrap:wrap;font:700 clamp(24px,4.2vw,40px) var(--display);color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.chant span{opacity:.6;transition:transform .1s,opacity .1s}
+.chant span.on{opacity:1;color:var(--gold);transform:scale(1.2)}
+.bigflower{width:min(200px,30vh);aspect-ratio:1;align-self:center;display:grid;place-items:center;font-size:min(170px,25vh);line-height:1;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));transition:transform .08s}
+.bigflower.beat{transform:scale(1.12)}
+.bigflower:active{transform:scale(.94)}
+
 /* phones and portrait tablets */
 @media (max-width:720px),(orientation:portrait) and (max-width:1000px){
   .stage{flex-direction:column}
@@ -255,14 +294,15 @@ button:focus-visible,select:focus-visible{outline:4px solid var(--gold);outline-
   .mname,.again{display:none}
   .speech{max-width:none;flex:1;font-size:17px;padding:10px 14px}
   .speech::before{top:50%;left:-10px;transform:translateY(-50%);border:10px solid transparent;border-left:0;border-right-color:#fff}
-  .win{width:150px}.win .frame{width:126px;height:126px}.win.star .frame{width:150px;height:150px}
+  .win{width:150px}.win .frame{width:126px;height:126px}.win.star .frame,.win.hex .frame{width:150px;height:150px}
+  .ear{min-height:64px;font-size:22px}.ear .ico{font-size:30px}
   .opt{width:84px;height:84px;font-size:40px}
   .tile,.slot{width:64px;height:70px;font-size:38px}.tile{height:64px}
   .group{max-width:100%}
   .lvl{font-size:16px;padding-inline:10px 12px}
 }
 @media (prefers-reduced-motion:reduce){
-  .bub,.bigbub,.group.b .obj,.hand,.sam,.mentor .av.talking,.mentor .av.dance{animation:none}
+  .bub,.bigbub,.group.b .obj,.hand,.sam,.mentor .av.talking,.mentor .av.dance,.flower,.beefly svg,.beefly .wing,.ear.on,.loop{animation:none}
 }
 </style>
 
@@ -317,6 +357,11 @@ button:focus-visible,select:focus-visible{outline:4px solid var(--gold);outline-
         <span class="badge" data-badge="music">🫧</span>
         <span class="frame"><span class="inner" data-av="xylo"></span></span>
         <span class="label">Music Room</span><span class="who">with HUNTR/X &amp; Katy</span>
+      </button>
+      <button class="win hex" data-game="buzz" style="--fill:#ffe08a">
+        <span class="badge" data-badge="buzz">🫧</span>
+        <span class="frame"><span class="inner" data-av="bumble"></span></span>
+        <span class="label">Buzz Garden</span><span class="who">with Bumble the Bee</span>
       </button>
       <button class="win tv" data-game="garden" style="--fill:#c4b5fd">
         <span class="frame"><span class="inner" data-av="irie"></span></span>
@@ -388,9 +433,9 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- saved progress (per device, best effort) ---------- */
-const DEF={stars:0,stickers:0,levels:{count:1,add:1,letters:1,spell:1,music:1},xp:{},slips:{},voices:{},muted:false,garden:'abc',spelledRemi:false,rounds:{},country:''};
+const DEF={stars:0,stickers:0,levels:{count:1,add:1,letters:1,spell:1,music:1,buzz:1},xp:{},slips:{},voices:{},muted:false,garden:'abc',spelledRemi:false,metBumble:false,rounds:{},country:''};
 const S=JSON.parse(JSON.stringify(DEF));
-function load(){try{const j=JSON.parse(localStorage.getItem('remi-bubble-club')||'null');if(j){Object.assign(S,j);S.levels=Object.assign({count:1,add:1,letters:1,spell:1,music:1},j.levels||{});S.xp=j.xp||{};S.slips=j.slips||{};S.voices=j.voices||{};S.rounds=j.rounds||{};}}catch(e){}}
+function load(){try{const j=JSON.parse(localStorage.getItem('remi-bubble-club')||'null');if(j){Object.assign(S,j);S.levels=Object.assign({count:1,add:1,letters:1,spell:1,music:1,buzz:1},j.levels||{});S.xp=j.xp||{};S.slips=j.slips||{};S.voices=j.voices||{};S.rounds=j.rounds||{};}}catch(e){}}
 function save(){try{localStorage.setItem('remi-bubble-club',JSON.stringify(S));}catch(e){}}
 load();
 
@@ -479,6 +524,21 @@ irie:`<svg class="av" viewBox="0 0 100 100" aria-hidden="true">
 <circle cx="50" cy="9" r="5" fill="#111"/>
 <path d="M84 72 v-12 l8 -3 v12" stroke="#fff" stroke-width="2.5" fill="none"/><circle cx="82" cy="73" r="3.5" fill="#fff"/><circle cx="90" cy="70" r="3.5" fill="#fff"/>
 </svg>`,
+bumble:`<svg class="av" viewBox="0 0 100 100" aria-hidden="true">
+<path class="wing" d="M36 44 Q18 8 42 16 Q52 22 48 44Z" fill="#dff4ff" stroke="#5cc8ff" stroke-width="2.5" opacity=".92"/>
+<path class="wing" d="M64 44 Q82 8 58 16 Q48 22 52 44Z" fill="#dff4ff" stroke="#5cc8ff" stroke-width="2.5" opacity=".92"/>
+<ellipse cx="50" cy="64" rx="30" ry="26" fill="#ffc53d"/>
+<path d="M26 54 Q50 48 74 54 L75 61 Q50 55 25 61Z" fill="#2a0a52"/>
+<path d="M22 69 Q50 63 78 69 L77 77 Q50 71 23 77Z" fill="#2a0a52"/>
+<path d="M50 92 l-5 -6 h10z" fill="#2a0a52"/>
+<circle cx="50" cy="40" r="21" fill="#ffc53d"/>
+<path d="M40 22 q-6 -12 -14 -14 M60 22 q6 -12 14 -14" stroke="#2a0a52" stroke-width="3" fill="none" stroke-linecap="round"/>
+<circle cx="26" cy="8" r="4" fill="#2a0a52"/><circle cx="74" cy="8" r="4" fill="#2a0a52"/>
+<circle cx="42" cy="38" r="4.4" fill="#2a0a52"/><circle cx="58" cy="38" r="4.4" fill="#2a0a52"/>
+<circle cx="43.5" cy="36.4" r="1.5" fill="#fff"/><circle cx="59.5" cy="36.4" r="1.5" fill="#fff"/>
+<circle cx="33" cy="46" r="4" fill="#fb7185" opacity=".55"/><circle cx="67" cy="46" r="4" fill="#fb7185" opacity=".55"/>
+<path d="M42 48 Q50 57 58 48" stroke="#2a0a52" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>`,
 xylo:`<svg class="av" viewBox="0 0 100 100" aria-hidden="true">
 <g transform="rotate(-8 50 50)">
 <rect x="10" y="22" width="10" height="60" rx="5" fill="#ff4d6d"/><rect x="23" y="26" width="10" height="52" rx="5" fill="#ff9f1c"/><rect x="36" y="30" width="10" height="44" rx="5" fill="#ffd166"/><rect x="49" y="33" width="10" height="38" rx="5" fill="#34d399"/><rect x="62" y="36" width="10" height="32" rx="5" fill="#5cc8ff"/><rect x="75" y="39" width="10" height="26" rx="5" fill="#9b5cf6"/>
@@ -506,9 +566,14 @@ const M={
     hello:'G’day Remi. I’m Uncle Archie. Let’s spell some words together, nice and slow.',
     intro:['Letter by letter, slow and true.','Let’s spell a word, just me and you.'],
     win:['Deadly, Remi. That’s it.','Beautiful, little one.','You spelt it. Good on you.','Slow and steady, you got it.','That’s my clever girl.']},
+  bumble:{name:'Bumble the Bee',color:'#f59e0b',
+    hello:'Buzz buzz! Hi Remi, I’m Bumble the bumble bee. Say buzz, and I’ll come flying!',
+    intro:['Bee, bee, bumble bee, say a letter, just for me!','Say it out loud, or tap the flower, and I’ll buzz right over.'],
+    win:['Buzz buzz! Sweet as honey!','Bee-autiful, Remi!','Zoom! You found my flower!','Honey for Remi! Yum!','Buzzing brilliant!']},
   irie:{name:'Irie the Sloth',color:'#1a9e4a',
     hello:'Irie, Remi! I’m Irie the sloth. Welcome to the Bubble Club. Take your time, no rush.',
     intro:['Easy now, Remi. Tap a letter, hear it sing.','Tap a number, count each thing. Irie!'],
+    meet:['Irie, Remi. This is my little friend Bumble the bee. She loves letters, and she loves your voice.','Say hello, Bumble!'],
     win:['Irie! Nice one.','Big up yourself, Remi!','Easy does it. Lovely.','Sweet, sweet, Remi.']}
 };
 const TRY=['Not that one. Have another look!','Oops! Try again, Remi.','Nearly! Look carefully.','Hmm, not quite. You can do it!'];
@@ -531,7 +596,8 @@ const PROF={
   gaga:{pref:['Samantha','Ava','Allison','Serena','Kate','Zira','Libby','Nicky'],lang:/en.US|en.GB/i,pitch:1.0,rate:0.88},
   huntrx:{pref:['Nicky','Aria','Jenny','Ava','Samantha','Zoe','Karen'],lang:/en/i,pitch:1.35,rate:1.0,trio:true},
   archie:{pref:MALE,lang:/en.AU|en.GB|en.US/i,pitch:0.78,rate:0.8,male:true},
-  irie:{pref:['Gordon','Lee','Daniel','Fred','Mark','Rishi','David','Arthur','James'],lang:/en/i,pitch:0.72,rate:0.72,male:true}
+  irie:{pref:['Gordon','Lee','Daniel','Fred','Mark','Rishi','David','Arthur','James'],lang:/en/i,pitch:0.72,rate:0.72,male:true},
+  bumble:{pref:['Karen','Zoe','Samantha','Ava','Moira','Catherine','Nicky'],lang:/en.AU|en/i,pitch:1.55,rate:1.05}
 };
 const VOICES={list:[]};
 const isGood=v=>!/compact|eloquence|eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bells|boing|bubbles|cellos|zarvox|trinoids|whisper|wobble|deranged|bad news|good news|hysterical|organ|superstar|jester|junior|ralph|albert/i.test(v.name);
@@ -540,7 +606,7 @@ function loadVoices(){ if(!window.speechSynthesis)return; const vs=speechSynthes
 function assignVoices(){
   const en=VOICES.list.filter(v=>/^en/i.test(v.lang)&&isGood(v)); const pool=en.length?en:VOICES.list; const used=new Set();
   const isMale=x=>MALE.some(n=>nameHas(x,n));
-  for(const k of ['archie','irie','katy','gaga','huntrx']){
+  for(const k of ['archie','irie','katy','gaga','huntrx','bumble']){
     const p=PROF[k]; let v=null;
     const ov=S.voices[k]; if(ov)v=VOICES.list.find(x=>x.voiceURI===ov)||null;
     if(!v)for(const n of p.pref){v=pool.find(x=>nameHas(x,n)&&!used.has(x.voiceURI));if(v)break;}
@@ -584,7 +650,7 @@ const Clips={man:null,tried:false,count:0,missing:new Set(),current:null,
 };
 let speakSerial=0,talkingCount=0;
 function cancelSpeech(){ if(window.speechSynthesis)speechSynthesis.cancel(); Clips.stop(); }
-function talkOn(key){const av=$('#mav');if(av&&cur&&ACT[cur].mentor===key){talkingCount++;av.classList.add('talking');}}
+function talkOn(key){const av=$('#mav');if(av&&cur&&(ACT[cur].mentor===key||$('#mname').textContent===M[key].name)){talkingCount++;av.classList.add('talking');}}
 function talkOff(){const av=$('#mav');if(av){talkingCount=Math.max(0,talkingCount-1);if(!talkingCount)av.classList.remove('talking');}}
 function speakAs(key,texts,opts){
   if(!Array.isArray(texts))texts=[texts]; opts=opts||{};
@@ -716,7 +782,7 @@ function wobbify(el){const t=el.dataset.wob||el.textContent;el.textContent='';fo
 $$('.wob').forEach(wobbify);
 $$('[data-av]').forEach(el=>{el.innerHTML=AV[el.dataset.av];});
 const crew=$('#crew');
-['irie','katy','gaga','huntrx','archie'].forEach(k=>{const b=document.createElement('button');b.style.setProperty('--mc',M[k].color);b.innerHTML=`<span class="mini">${AV[k]}</span><span>${M[k].name}</span>`;b.addEventListener('click',()=>{FX.unlock();loadVoices();FX.tap();speakAs(k,M[k].hello);});crew.appendChild(b);});
+['irie','katy','gaga','huntrx','archie','bumble'].forEach(k=>{const b=document.createElement('button');b.style.setProperty('--mc',M[k].color);b.innerHTML=`<span class="mini">${AV[k]}</span><span>${M[k].name}</span>`;b.addEventListener('click',()=>{FX.unlock();loadVoices();FX.tap();speakAs(k,M[k].hello);});crew.appendChild(b);});
 
 function show(id){$$('.screen').forEach(s=>s.hidden=(s.id!==id));if(id==='hub')refreshBadges();}
 function setBubble(t){$('#speech').textContent=t;}
@@ -734,7 +800,7 @@ function addStar(){
 function setMuted(m){S.muted=m;save();$$('.muteBtn').forEach(b=>b.textContent=m?'🔇':'🔊');if(m)cancelSpeech();}
 $$('.muteBtn').forEach(b=>b.addEventListener('click',()=>{setMuted(!S.muted);if(!S.muted){FX.unlock();say('Sound on!');}}));
 $$('.homeBtn').forEach(b=>b.addEventListener('click',goHome));
-function goHome(){roundToken++;Hint.clear();cur=null;Mic.stop();cancelSpeech();FX.tap();show('hub');}
+function goHome(){roundToken++;Hint.clear();cur=null;Mic.stop();Ears.stop();cancelSpeech();FX.tap();show('hub');}
 
 /* ---------- microphone + pitch (only where the browser allows it) ---------- */
 const Mic={stream:null,an:null,buf:null,on:false,denied:false,
@@ -763,6 +829,35 @@ const Mic={stream:null,an:null,buf:null,on:false,denied:false,
     return {rms,hz:sr/lag};
   }
 };
+/* ---------- ears: speech recognition, one phrase at a time (Safari on the iPad, Chrome). Safari wants the first
+   start to come from a tap, so the Say it button primes it; after that each round listens by itself. ---------- */
+const Ears={ok:!!(window.SpeechRecognition||window.webkitSpeechRecognition),rec:null,primed:false,denied:false,on:false,
+  listen(tok,opts){ opts=opts||{};
+    return new Promise(res=>{
+      if(!this.ok||this.denied){res(null);return;}
+      this.stop(); const R=window.SpeechRecognition||window.webkitSpeechRecognition; let r; try{r=new R();}catch(e){res(null);return;}
+      r.lang='en-AU'; r.continuous=false; r.interimResults=true; r.maxAlternatives=5;
+      let alts=[],done=false; const self=this; this.rec=r; this.on=true;
+      const finish=v=>{ if(done)return; done=true; clearTimeout(guard); self.on=false; if(self.rec===r)self.rec=null; try{r.abort();}catch(e){} if(opts.onstate)opts.onstate('off'); res(v); };
+      const guard=setTimeout(()=>finish(alts.length?alts:null),opts.ms||9000);
+      r.onstart=()=>{self.primed=true;if(opts.onstate)opts.onstate('on');};
+      r.onresult=e=>{ if(tok!==roundToken){finish(null);return;} alts=[];
+        for(let i=0;i<e.results.length;i++){const rs=e.results[i];for(let j=0;j<rs.length;j++)if(rs[j].transcript&&rs[j].transcript.trim())alts.push(rs[j].transcript.trim());}
+        if(opts.onheard&&alts.length)opts.onheard(alts[0]);
+        if(e.results[e.results.length-1].isFinal)finish(alts.length?alts:null); };
+      r.onerror=e=>{ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ if(opts.gesture)self.denied=true; else self.primed=false; } finish(null); };
+      r.onend=()=>finish(alts.length?alts:null);
+      try{r.start();}catch(e){finish(null);}
+    });
+  },
+  stop(){ if(this.rec){const r=this.rec;this.rec=null;try{r.abort();}catch(e){}} this.on=false; }
+};
+function earUI(box){ /* the Say it button plus what was heard */
+  box.innerHTML=`<div class="earrow"><button class="ear" id="ear"><span class="ico">🎤</span><span id="earlbl">Say it!</span></button></div><div class="heard" id="heard"></div>`;
+  const btn=$('#ear'),lbl=$('#earlbl'),heard=$('#heard');
+  if(!Ears.ok||Ears.denied)btn.hidden=true;
+  return {btn,state(s){btn.classList.toggle('on',s==='on');lbl.textContent=s==='on'?'Listening…':'Say it!';if(s==='on')heard.textContent='';},heard(t){heard.textContent=t?`I heard: “${t}”`:'';}};
+}
 const hzToMidi=h=>69+12*Math.log2(h/440);
 const midiToHz=m=>440*Math.pow(2,(m-69)/12);
 const pcDist=(m,t)=>{let d=((m-t)%12+18)%12-6;return d;}; /* distance in semitones, octave-free */
@@ -782,8 +877,8 @@ function placeBubbles(field,items,size){
   items.forEach((it,i)=>{
     const cell=cells[i%cells.length];
     const x=cell[0]*cw+rnd(Math.max(1,Math.floor(cw-sz))),y=cell[1]*ch+rnd(Math.max(1,Math.floor(ch-sz)));
-    const b=document.createElement('button');b.className='bub';b.style.setProperty('--sz',sz+'px');b.style.left=x+'px';b.style.top=y+'px';
-    b.style.animationDelay=(-rnd(3000))+'ms';b.style.setProperty('--bc',it.bc||pick(BC));b.innerHTML=`<span>${it.text||''}</span>`;
+    const b=document.createElement('button');b.className=it.cls||'bub';b.style.setProperty('--sz',sz+'px');b.style.left=x+'px';b.style.top=y+'px';
+    b.style.animationDelay=(-rnd(3000))+'ms';b.style.setProperty('--bc',it.bc||pick(BC));b.innerHTML=it.html||`<span>${it.text||''}</span>`;
     b.addEventListener('click',()=>it.onTap(b));field.appendChild(b);
   });
 }
@@ -1149,10 +1244,180 @@ ACT.garden={name:'Letter Garden',mentor:'irie',taps:0,
   }
 };
 
+/* Bumble the Bee: Buzz Garden. Say a letter (or tap its flower) and Bumble flies there; first sounds;
+   the bee, bee, bumble bee chant; say any letter you like */
+const FLOWERS=['🌸','🌼','🌺','🌻','🌷','💮'];
+const CHANT=[['Bee','bee'],['bee','bee'],['bumble','bumble'],['bee','bee'],['can you','can you'],['say your','say your'],['name for','name for'],['me?','me']];
+const HEARD={A:['a','ay','hey','eh','aye'],B:['b','be','bee','bea','buh'],C:['c','see','sea','si','cee'],D:['d','de','dee','di'],E:['e','ee','he','eee'],F:['f','ef','eff'],G:['g','gee','ji','jee'],H:['h','aitch','haitch'],I:['i','eye','aye'],J:['j','jay','jae'],K:['k','kay','cay'],L:['l','el','ell','elle'],M:['m','em'],N:['n','en'],O:['o','oh'],P:['p','pee','pea','pi'],Q:['q','cue','queue','kyu'],R:['r','are','ar','arr'],S:['s','es','ess'],T:['t','tea','tee','ti'],U:['u','you','yu','ew'],V:['v','vee'],W:['w','double u','double you','dub'],X:['x','ex','eks'],Y:['y','why','wy'],Z:['z','zed','zee']};
+function hearLetters(alts,cands){ /* which of the candidate letters did Remi say? (letter names, or the letter's word) */
+  const found=[];
+  for(const a of alts){const t=' '+Clips.norm(a)+' ';
+    for(const L of cands){ if(found.includes(L))continue;
+      const names=HEARD[L].concat([LET[L][1].toLowerCase().split(' ')[0]]);
+      if(names.some(n=>t.includes(' '+n+' ')))found.push(L);}}
+  return found;
+}
+const isRemi=alts=>alts.some(a=>/\b(remi|remy|remmy|remie|remmie|rhemi|emi|emmy|ramy|rainy|wemmy|jeremy|lemmy|ready)\b/i.test(a));
+const heardBuzz=alts=>alts.some(a=>/\bbuzz/i.test(a));
+ACT.buzz={name:'Buzz Garden',mentor:'bumble',
+  round(ready){
+    const tok=++roundToken,lv=S.levels.buzz,play=$('#play'),n=nextRound('buzz'); play.classList.add('meadow');
+    const modes=lv===1?['letter','name']:lv===2?['letter','chant','letter','any']:lv===5?['sound','letter','chant','any']:['letter','sound','chant','any'];
+    const mode=modes[(n-1)%modes.length];
+    let done=false,busy=false,wrongs=0,listens=0,onFlower=null;
+    const pool=lv===1?['R','E','M','I']:lv===2?['R','E','M','I','A','B','C','D','O','S','T','P','K']:ALPHA;
+    const lower=lv>=4, show=ch=>lower?ch.toLowerCase():ch;
+    const canListen=()=>Ears.ok&&!Ears.denied;
+    const nudgeEar=ui=>{if(canListen()&&!Ears.primed){Hint.point(ui.btn);setTimeout(()=>Hint.hide(),2500);}};
+
+    function meadow(top,letters,extra){ /* flowers in a field, the bee at her hive */
+      play.innerHTML=`${top}<div class="field" id="field"><div class="hive" aria-hidden="true">🍯</div><div class="beefly" id="bee" aria-hidden="true">${AV.bumble}</div></div>${extra||''}`;
+      const field=$('#field'),ui=$('#earbox')?earUI($('#earbox')):null; /* the Say it button goes in before the flowers are placed, so the field has its final size */
+      placeBubbles(field,letters.map((ch,i)=>({cls:'flower',html:`${FLOWERS[i%FLOWERS.length]}<span class="let">${show(ch)}</span>`,onTap:b=>{if(onFlower)onFlower(ch,b);}})),116);
+      const bee=$('#bee'); bee.style.transition='none'; moveBee(field.querySelector('.hive'),{over:true}); void bee.offsetWidth; bee.style.transition='';
+      return ui;
+    }
+    function moveBee(el,o){
+      const bee=$('#bee'),field=$('#field'); if(!bee||!el||!field)return Promise.resolve();
+      const fr=field.getBoundingClientRect(),r=el.getBoundingClientRect(),bs=bee.offsetWidth||96;
+      const x=r.left-fr.left+r.width/2-bs/2, y=r.top-fr.top+r.height/2-bs*(o&&o.over?0.9:0.5);
+      const px=parseFloat(bee.style.left)||0; bee.classList.toggle('left',x<px-4); bee.classList.remove('rest');
+      bee.style.left=Math.max(0,x)+'px'; bee.style.top=Math.max(0,y)+'px';
+      return wait(RM?60:950);
+    }
+    const flowerFor=ch=>$$('#field .flower').find(f=>f.querySelector('.let').textContent.toUpperCase()===ch);
+    function buzzTrick(){const el=$('#bee')||$('#mav');el.classList.remove('loop');void el.offsetWidth;el.classList.add('loop');FX.pop(5);setBubble('Buzz buzz!');say('Buzz buzz!');}
+    async function settle(f,pre){ /* the bee lands on the right flower */
+      Hint.clear(); Ears.stop();
+      await moveBee(f,{over:true}); if(tok!==roundToken)return;
+      f.classList.add('bloom'); burstAt(f); FX.pop(3); $('#bee').classList.add('rest');
+      $$('#field .flower').forEach(x=>{if(x!==f)x.classList.add('gone');});
+      celebrate(tok,wrongs,pre);
+    }
+    /* listens once Remi has been asked; gesture=true when she tapped the Say it button */
+    async function listenRound(ui,gesture,onAlts){
+      if(done||busy||tok!==roundToken||!canListen()||Ears.on)return; if(!gesture&&(!Ears.primed||listens>=3))return;
+      listens++; const alts=await Ears.listen(tok,{gesture,onstate:s=>ui.state(s),onheard:t=>ui.heard(t)});
+      if(done||busy||tok!==roundToken)return;
+      if(!alts){ if(Ears.denied)ui.btn.hidden=true; return 'nothing'; }
+      if(heardBuzz(alts)&&!onAlts(alts,true)){buzzTrick();return 'buzz';}
+      return onAlts(alts,false)?'ok':'miss';
+    }
+
+    if(mode==='letter'||mode==='sound'){
+      const sound=mode==='sound';
+      const L=sound?pick(ALPHA.filter(x=>x!=='X')):pick(pool),info=LET[L];
+      const count=sound?4:lv===1?3:lv===2?4:lv===3?5:6, others=shuffle(ALPHA.filter(x=>x!==L)).slice(0,count-1);
+      const shown=shuffle([L].concat(others)), hideTarget=sound||lv===3||lv===5;
+      const top=sound?`<div class="prompt"><div class="bignum" style="font-size:clamp(56px,10vh,90px)">${info[2]}</div><div class="ptext">Which flower starts <b>${info[1]}</b>?</div></div>`
+        :`<div class="prompt"><div class="bignum" id="tgt" ${hideTarget?'hidden':''}>${show(L)}</div><div class="ptext">Say <b>${show(L)}</b>, or tap its flower<br><span style="font-size:.75em">${L} is for ${info[1]} ${info[2]}</span></div></div>`;
+      const ui=meadow(top,shown,'<div id="earbox"></div>');
+      function land(f){ if(done||busy)return; done=true; busy=true; ui.state('off'); settle(f,`${L}! ${L} says ${info[0]}, like ${info[1]}!`); }
+      async function miss(ch,f){ if(done||busy)return; busy=true; wrongs++; Ears.stop(); ui.state('off');
+        await moveBee(f); if(tok!==roundToken)return; FX.nope(); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
+        const t=sound?`${ch} says ${LET[ch][0]}. ${info[1]} starts with ${info[0]}.`:`That’s ${ch}. We want ${L}.`; setBubble(t); const tg=$('#tgt'); if(tg)tg.hidden=false;
+        await say(t); busy=false; if(tok!==roundToken||done)return; hear(false); }
+      onFlower=(ch,f)=>{ if(ch===L)land(f); else miss(ch,f); };
+      async function hear(gesture){
+        const r=await listenRound(ui,gesture,alts=>{const got=hearLetters(alts,shown); if(got.includes(L)){land(flowerFor(L));return true;} if(got.length){miss(got[0],flowerFor(got[0]));return true;} return false;});
+        if(r!=='miss'||tok!==roundToken||done)return;
+        const t=`Buzz! I didn’t catch that. Say ${L}, or tap the ${L} flower.`; setBubble(t); await say(t); if(tok!==roundToken||done)return; hear(false);
+      }
+      ui.btn.addEventListener('click',()=>{FX.tap();hear(true);});
+      const bub=sound?`Which flower starts ${info[1]}? ${info[0]}, ${info[1]}. Say the letter, or tap the flower.`:`Buzz to the letter ${show(L)}! ${L} says ${info[0]}, like ${info[1]}. Say ${L}, or tap the flower.`;
+      const lines=sound?[`${info[1]}.`,`${info[0]}, ${info[1]}. Which letter says ${info[0]}? Say it, or tap the flower.`]:[lower?`Buzz to little ${L}.`:`Buzz to the letter ${L}.`,`${L} says ${info[0]}. Like ${info[1]}.`,`Say ${L}, or tap the flower.`];
+      ask(bub,lines,ready).then(()=>wait(250)).then(()=>{if(tok!==roundToken||done)return;hear(false);nudgeEar(ui);});
+      Hint.arm(k=>{const tg=$('#tgt');if(tg)tg.hidden=false;Hint.point(flowerFor(L));if(k===1)say(sound?`${info[1]} starts with ${L}.`:`Look for ${L}. It looks like this.`);});
+    }
+
+    else if(mode==='name'){ /* the chant's question, then the bee visits R, E, M, I */
+      const letters=['R','E','M','I']; let tries=0;
+      const ui=meadow('<div class="ptext">Bee, bee, bumble bee, can you say your <b>name</b> for me?</div>',letters,'<div id="earbox"></div><button class="bigbtn sub" id="did" hidden>I said my name! 👧</button>'),did=$('#did'); if(!canListen())did.hidden=false;
+      async function gotName(){ if(done||busy)return; done=true; busy=true; Hint.clear(); Ears.stop(); ui.state('off'); did.hidden=true;
+        for(let i=0;i<letters.length;i++){const f=flowerFor(letters[i]); await moveBee(f,{over:true}); if(tok!==roundToken)return; f.classList.add('bloom'); burstAt(f); FX.tick(i*3); await speakAs('bumble',[`${letters[i]}.`]); if(tok!==roundToken)return;}
+        $('#bee').classList.add('rest'); celebrate(tok,0,'R, E, M, I. Remi! That’s your name!'); }
+      onFlower=(ch,f)=>{ if(done||busy)return; FX.tap(); burstAt(f); say(`${ch}.`); };
+      did.addEventListener('click',()=>{if(done||busy)return;FX.ding();gotName();});
+      async function hear(gesture){
+        const r=await listenRound(ui,gesture,(alts,buzzOnly)=>{ if(isRemi(alts)||(!buzzOnly&&tries>=1)){gotName();return true;} return false; });
+        if(tok!==roundToken||done)return;
+        if(r==='nothing'){did.hidden=false;return;}
+        if(r!=='miss')return;
+        tries++; did.hidden=false; const t='Buzz! Say your name, nice and loud. Remi!'; setBubble(t); await say(t); if(tok!==roundToken||done)return; hear(false);
+      }
+      ui.btn.addEventListener('click',()=>{FX.tap();hear(true);});
+      const q='Bee, bee, bumble bee, can you say your name for me?';
+      ask(q,[q],ready).then(()=>wait(250)).then(()=>{if(tok!==roundToken||done)return;hear(false);nudgeEar(ui);});
+      Hint.arm(k=>{if(!did.hidden)Hint.point(did);else if(!ui.btn.hidden)Hint.point(ui.btn);if(k===1)say('Buzz! Say your name, nice and loud. Remi!');});
+    }
+
+    else if(mode==='chant'){ /* tap the big flower on every beat of the chant, then answer its question */
+      const per=60000/96,beats=CHANT.length,need=lv<=3?5:6; let times=[],start=0,running=false,attempt=0,phase='chant',tries=0;
+      play.innerHTML=`<div class="chant" id="chant">${CHANT.map(w=>`<span>${w[0]}</span>`).join('')}</div><div class="beats" id="beats">${CHANT.map(()=>'<i></i>').join('')}</div><button class="bigflower" id="bigf" aria-label="Tap the flower">🌻</button><button class="bigbtn" id="go">Start the chant!</button><div id="earbox" hidden></div><button class="bigbtn sub" id="did" hidden>I said my name! 👧</button>`;
+      const words=$$('#chant span'),dots=$$('#beats i'),bigf=$('#bigf'),go=$('#go'),av=$('#mav'),ui=earUI($('#earbox')),did=$('#did');
+      const haveClips=!!Clips.man&&CHANT.every(w=>Clips.resolve('bumble',w[1]));
+      bigf.addEventListener('click',()=>{FX.pop(2);bigf.classList.add('beat');setTimeout(()=>bigf.classList.remove('beat'),90);if(running)times.push(performance.now()-start);});
+      function beatWord(i){ words.forEach((w,j)=>w.classList.toggle('on',j===i)); dots[i].classList.add('on'); bigf.classList.add('beat'); setTimeout(()=>bigf.classList.remove('beat'),120);
+        if(haveClips){ Clips.stop(); const a=new Audio(Clips.resolve('bumble',CHANT[i][1])[0]); Clips.current=a; a.play().catch(()=>{}); } }
+      async function run(){
+        if(running||tok!==roundToken||done)return; running=true; times=[]; dots.forEach(d=>d.className=''); words.forEach(w=>w.classList.remove('on')); go.hidden=true; attempt++; Hint.clear();
+        if(!haveClips&&attempt===1){ await speakAs('bumble',['Bee, bee, bumble bee, can you say your name for me?']); if(tok!==roundToken)return; }
+        av.classList.add('dance'); start=performance.now()+4*per;
+        for(let i=0;i<beats+4;i++)setTimeout(()=>{if(tok!==roundToken)return;const b=i-4;FX.tick(b<0?0:7);if(b<0)setBubble(['1','2','3','4'][i]+'…');else beatWord(b);},i*per);
+        setTimeout(()=>{ if(tok!==roundToken)return; running=false; av.classList.remove('dance'); words.forEach(w=>w.classList.remove('on'));
+          let good=0;for(let b=0;b<beats;b++){const t=b*per;const hit=times.some(x=>Math.abs(x-t)<230);dots[b].className=hit?'good':'miss';if(hit)good++;}
+          if(good>=need||attempt>=2){ if(good<need)wrongs=2; const t=good>=need?`${good} beats! You kept the beat!`:'You chanted with me!'; setBubble(t); say(t).then(()=>{if(tok===roundToken)nameTime();}); }
+          else{ const t='Nearly! Listen for the tick, then tap the flower.'; setBubble(t); say(t).then(()=>{if(tok!==roundToken)return;go.hidden=false;Hint.point(go);}); }
+        },(beats+4)*per+300);
+      }
+      go.addEventListener('click',run);
+      async function gotName(){ if(done)return; done=true; Hint.clear(); Ears.stop(); ui.state('off'); did.hidden=true; buzzTrick(); await wait(700); if(tok===roundToken)celebrate(tok,wrongs,'Remi! R, E, M, I. That’s your name!'); }
+      did.addEventListener('click',()=>{if(done||phase!=='name')return;FX.ding();gotName();});
+      async function hear(gesture){
+        const r=await listenRound(ui,gesture,(alts,buzzOnly)=>{ if(isRemi(alts)||(!buzzOnly&&tries>=1)){gotName();return true;} return false; });
+        if(tok!==roundToken||done)return;
+        if(r==='nothing'){did.hidden=false;return;}
+        if(r!=='miss')return;
+        tries++; did.hidden=false; const t='Buzz! Say your name, nice and loud. Remi!'; setBubble(t); await say(t); if(tok!==roundToken||done)return; hear(false);
+      }
+      ui.btn.addEventListener('click',()=>{FX.tap();hear(true);});
+      async function nameTime(){ if(tok!==roundToken||done)return; phase='name'; bigf.hidden=true; $('#earbox').hidden=false; if(!canListen())did.hidden=false;
+        const q='Can you say your name for me?'; setBubble(q); instr=[q]; await speakAs('bumble',[q]); if(tok!==roundToken)return; hear(false); nudgeEar(ui);
+        Hint.arm(k=>{if(!did.hidden)Hint.point(did);else if(!ui.btn.hidden)Hint.point(ui.btn);if(k===1)say('Buzz! Say your name, nice and loud. Remi!');}); }
+      ask('Tap the big flower on every beat, and chant with me! Bee, bee, bumble bee…','Tap the big flower on every beat, and chant with me!',ready);
+      Hint.arm(k=>{if(phase==='chant'&&!running){Hint.point(go);if(k===1)say('Press start, then tap the flower on every tick.');}});
+    }
+
+    else{ /* any: say any letter you like, and Bumble buzzes to it */
+      const shown=shuffle(pool).slice(0,8);
+      const ui=meadow('<div class="ptext">Say <b>any letter</b>, and Bumble will buzz to it!</div>',shown,'<div id="earbox"></div>');
+      function land(ch){ if(done||busy)return; done=true; busy=true; ui.state('off');
+        let f=flowerFor(ch); if(!f){f=pick($$('#field .flower'));f.querySelector('.let').textContent=show(ch);}
+        const info=LET[ch]; settle(f,`${ch}! ${ch} says ${info[0]}, like ${info[1]}!`); }
+      onFlower=(ch,f)=>land(ch);
+      const nudge=`Buzz! Say any letter you like. ${shown[0]}, or ${shown[1]}, or ${shown[2]}! Or tap a flower.`;
+      async function hear(gesture){
+        const r=await listenRound(ui,gesture,alts=>{const got=hearLetters(alts,ALPHA); if(got.length){land(got[0]);return true;} return false;});
+        if(r!=='miss'||tok!==roundToken||done)return;
+        setBubble(nudge); await say(nudge); if(tok!==roundToken||done)return; hear(false);
+      }
+      ui.btn.addEventListener('click',()=>{FX.tap();hear(true);});
+      ask('Bee, bee, bumble bee, say any letter, just for me! Or tap a flower.',['Bee, bee, bumble bee, say any letter, just for me!','Or tap a flower.'],ready).then(()=>wait(250)).then(()=>{if(tok!==roundToken||done)return;hear(false);nudgeEar(ui);});
+      Hint.arm(k=>{if(canListen()&&!Ears.primed&&!ui.btn.hidden)Hint.point(ui.btn);else Hint.point(pick($$('#field .flower')));if(k===1)say(nudge);});
+    }
+  }
+};
+
 /* ---------- navigation ---------- */
 function openGame(key){
   cur=key; const a=ACT[key]; if(key==='music')a.mentor='huntrx'; const m=M[a.mentor]; setMentor(a.mentor); $('#gtitle').textContent=a.name; $('#play').className='play'; show('game'); FX.tap(); refreshLevel();
   const intro=key==='music'?m.music:m.intro;
+  if(key==='buzz'&&!S.metBumble){ /* Irie introduces his friend the first time */
+    setMentor('irie'); const meet=M.irie.meet; setBubble(meet.join(' ')); /* Irie's face for the introduction; the room's voice stays Bumble's, so a tap meanwhile is answered by the bee */
+    a.round(speakAs('irie',meet).then(()=>{ if(cur!=='buzz')return; S.metBumble=true; save(); setMentor('bumble'); setBubble(M.bumble.hello); return speakAs('bumble',[M.bumble.hello]); })
+      .then(()=>{ if(cur!=='buzz')return; setBubble(intro.join(' ')); return speakAs('bumble',intro); }));
+    return;
+  }
   setBubble(intro.join(' '));
   a.round(speakAs(a.mentor,intro));
 }
@@ -1160,7 +1425,7 @@ $$('.win').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
 $('#stickersBtn').addEventListener('click',()=>{
   FX.tap(); const g=$('#stickgrid'); g.innerHTML='';
   STICKERS.forEach((s,i)=>{const d=document.createElement('div');const got=i<S.stickers;d.className='stick'+(got?'':' locked');d.textContent=got?s:'?';g.appendChild(d);});
-  $('#shelf').innerHTML=['count','letters','add','spell','music'].map(k=>{const lv=S.levels[k];return `<div class="trophy"><span class="mini">${k==='music'?AV.xylo:AV[ACT[k].mentor]}</span><span>${k==='music'?'Music':M[ACT[k].mentor].name}</span><span class="lv">${LVL_EMOJI[lv]}</span><span>${LVL_NAME[lv]}</span></div>`;}).join('');
+  $('#shelf').innerHTML=['count','letters','add','spell','music','buzz'].map(k=>{const lv=S.levels[k];return `<div class="trophy"><span class="mini">${k==='music'?AV.xylo:AV[ACT[k].mentor]}</span><span>${k==='music'?'Music':M[ACT[k].mentor].name}</span><span class="lv">${LVL_EMOJI[lv]}</span><span>${LVL_NAME[lv]}</span></div>`;}).join('');
   show('stickers'); speakAs('irie',S.stickers?`You have ${S.stickers} sticker${S.stickers===1?'':'s'}, Remi. Irie!`:'Earn 5 stars to get your first sticker!');
 });
 const ackText=()=>S.country?`We acknowledge the Traditional Owners of the land we’re playing on, the ${S.country} people, and pay our respects to Elders past and present.`:`We acknowledge the Traditional Owners of the land we’re playing on, and pay our respects to Elders past and present.`;
@@ -1184,7 +1449,7 @@ function openGrownups(){
     rows.appendChild(row);
   });
   if(!en.length)rows.innerHTML='<p class="gnote">No voices are available on this device yet. On an iPad, open Settings → Accessibility → Spoken Content → Voices → English and download one or two.</p>';
-  $('#lvlsummary').textContent=['count','letters','add','spell','music'].map(k=>`${ACT[k].name}: ${LVL_NAME[S.levels[k]]} (level ${S.levels[k]}, ${S.xp[k]||0}/${XP_NEED})`).join(' · ')+'. Each game levels up after 5 clean rounds and eases back after 3 tricky ones. Singing in tune and the roar meter need the microphone; where the browser refuses it, the game switches to a sing-along with an "I sang it" button.';
+  $('#lvlsummary').textContent=['count','letters','add','spell','music','buzz'].map(k=>`${ACT[k].name}: ${LVL_NAME[S.levels[k]]} (level ${S.levels[k]}, ${S.xp[k]||0}/${XP_NEED})`).join(' · ')+'. Each game levels up after 5 clean rounds and eases back after 3 tricky ones. Singing in tune and the roar meter need the microphone; where the browser refuses it, the game switches to a sing-along with an "I sang it" button. Buzz Garden listens for Remi’s voice (Safari asks once); the first listen starts from the Say it button, after that Bumble listens by herself. Tapping the flowers always works too.';
   $('#resetNote').textContent='';$('#resetBtn').dataset.armed='';$('#resetBtn').textContent='Reset Remi’s progress';
   $('#country').value=S.country||'';
   $('#clipinfo').textContent=Clips.man?`${Clips.count} recorded clips found. Lines heard so far with no recording: ${Clips.missing.size}.`:'No recorded voices found next to the game (voices/manifest.json), so the device voices above are used. See the README for how to add recordings.';

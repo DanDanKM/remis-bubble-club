@@ -1,6 +1,6 @@
 # Remi's Bubble Club
 
-A counting, letters, spelling and music game for Remi, hosted by Irie the sloth, Katy, Gaga, HUNTR/X and Uncle Archie.
+A counting, letters, spelling, music and talking-to-a-bee game for Remi, hosted by Irie the sloth, Katy, Gaga, HUNTR/X, Uncle Archie and Bumble the Bee.
 
 - `index.html` is the whole game. Open it, or visit the GitHub Pages address for this repository.
 - `voices/` holds optional recorded character voices. Without it the game uses the device's built-in voices.
@@ -10,6 +10,11 @@ A counting, letters, spelling and music game for Remi, hosted by Irie the sloth,
 
 Open the Pages address in Safari, tap Share, then "Add to Home Screen". The first tap unlocks sound.
 Singing in tune and the roar meter use the microphone. Safari asks once; allow it.
+
+Buzz Garden (Bumble the Bee) listens for Remi's voice: she says a letter, or her name, and Bumble flies to the flower.
+The first listen in each visit starts from the big "Say it" button (Safari asks once for speech recognition); after that Bumble
+listens by herself after each question. Tapping the flowers always works too, so the game never depends on the microphone.
+If the home-screen icon does not listen, open the same address in Safari itself.
 
 ## Adding real character voices
 

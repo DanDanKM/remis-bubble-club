@@ -2,9 +2,10 @@
 # Paste your API key when asked. It is kept only for this run and is never written to disk.
 param([string]$Country)
 Set-Location $PSScriptRoot
-if (-not $env:ELEVENLABS_API_KEY) {
-  $sec = Read-Host -AsSecureString "Paste your ElevenLabs API key, then press Enter (nothing shows while you paste)"
-  $env:ELEVENLABS_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec))
+if (-not $env:ELEVENLABS_API_KEY -and -not (Test-Path "key.txt")) {
+  Write-Host "No key yet. Opening key.txt in Notepad: paste your ElevenLabs API key, save, close Notepad, then run this again." -ForegroundColor Yellow
+  notepad key.txt
+  exit 1
 }
 Write-Host ""
 Write-Host "Checking the line list..." -ForegroundColor Cyan
